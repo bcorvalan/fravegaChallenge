@@ -1,3 +1,4 @@
+/*a sloppy solution to API call and pagination*/
 export async function pokelist(page) {
   let pokemons = [];
   let dataDetails;

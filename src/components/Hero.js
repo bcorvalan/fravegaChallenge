@@ -9,7 +9,6 @@ function Hero() {
           Simple Pokedex App created with React and PokeAPI. Check your favorite
           Pokmeon deteails from the card of each one.{" "}
         </p>
-        <button>Go to Pokedex</button>
       </div>
     </div>
   );

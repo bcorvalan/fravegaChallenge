@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "./App.scss";
+import "./style/base.scss";
 import { getPokemon, getAllPokemon } from "./services/pokeAPI";
 import Hero from "./components/Hero";
 import Card from "./components/Card";
 
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
-  //const [page, setPage] = useState(1);
   const [nextUrl, setNextUrl] = useState("");
   const [prevUrl, setPrevUrl] = useState("");
   const [loading, setLoading] = useState(true);
-  const initialURL = "https://pokeapi.co/api/v2/pokemon/?limit=5" 
+  const initialURL = "https://pokeapi.co/api/v2/pokemon/?limit=5";
 
   useEffect(() => {
     async function fetchData() {
@@ -24,14 +23,14 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      let response = await getAllPokemon(initialURL)
+      let response = await getAllPokemon(initialURL);
       setNextUrl(response.next);
       setPrevUrl(response.previous);
       await loadPokemon(response.results);
       setLoading(false);
     }
     fetchData();
-  }, [])
+  }, []);
 
   const incrementPokemons = async () => {
     setLoading(true);
@@ -40,7 +39,7 @@ function App() {
     setNextUrl(data.next);
     setPrevUrl(data.previous);
     setLoading(false);
-  }
+  };
 
   const decrementPokemons = async () => {
     if (!prevUrl) return;
@@ -50,25 +49,32 @@ function App() {
     setNextUrl(data.next);
     setPrevUrl(data.previous);
     setLoading(false);
-  }
+  };
 
   const loadPokemon = async (data) => {
-    let _pokemonData = await Promise.all(data.map(async pokemon => {
-      let pokemonRecord = await getPokemon(pokemon)
-      return pokemonRecord
-    }))
+    let _pokemonData = await Promise.all(
+      data.map(async (pokemon) => {
+        let pokemonRecord = await getPokemon(pokemon);
+        return pokemonRecord;
+      })
+    );
     setPokemonData(_pokemonData);
-  }
-
+  };
 
   return (
     <div className="App">
       <Hero />
-      {pokemonData.map((pokemon, i) => {
-        return <Card key={i} pokemon={pokemon} />
-              })}
-      <button onClick={incrementPokemons}>ADD 5</button>
-      <button onClick={decrementPokemons}>Remove 5</button>
+      {console.log(pokemonData)}
+      <div className="card__conteiner">
+        {pokemonData.map((pokemon, i) => {
+          return <Card key={i} pokemon={pokemon} />;
+        })}
+      </div>
+      <div id="outer-circle">
+        <div id="inner-circle"></div>
+      </div>
+      <button onClick={incrementPokemons}>Show more</button>
+      <button onClick={decrementPokemons}>Show less</button>
     </div>
   );
 }
